@@ -15,7 +15,7 @@ def open_file():
         return
     img = cv2.imread(filepath)
     display_image(img, original = True)
-    sketch_img() = convert_to_sketch(img)
+    sketch_img = convert_to_sketch(img)
     display_image(sketch_img, original = False)
 
 
@@ -41,7 +41,40 @@ def display_image(img, original):
         images["sketch"] = img_pil
 
     label = original_image_label if original else sketch_image_label
-    label.config(image=imb_tk)
+    label.config(image=img_tk)
     label.image = img_tk
 
 
+def save_sketch():
+    if images["sketch"] is None:
+        messagebox.showerror("Error", "No Sketch to save.")
+        return
+
+    sketch_filepath = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png")])
+    if not sketch_filepath:
+        return
+
+    images["sketch"].save(sketch_filepath, "PNG")
+    messagebox.showinfo("Saved", "Sketch saved to {}".format(sketch_filepath))
+
+
+app = tk.Tk()
+app.title('Pencil Sketch Converter')
+frame = tk.Frame(app)
+frame.pack(pady=10, padx=10)
+
+original_image_label = tk.Label(frame)
+original_image_label.grid(row=0, column=0, padx=5, pady=5)
+sketch_image_label = tk.Label(frame)
+sketch_image_label.grid(row=0, column=1, padx=5, pady=5)
+
+btn_frame = tk.Frame(app)
+btn_frame.pack(pady=10)
+
+open_button = tk.Button(btn_frame, text="Open Image", command=open_file)
+open_button.grid(row=0, column=0, padx=5)
+
+save_button = tk.Button(btn_frame, text="Save Sketch", command=save_sketch)
+save_button.grid(row=0, column=1, padx=5)
+
+app.mainloop()
