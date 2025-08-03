@@ -31,8 +31,13 @@ def convert_to_sketch(img):
 
 
 def display_image(img, original):
+    max_size = (400, 400)
+
     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) if original else img
     img_pil = Image.fromarray(img_rgb)
+
+    img_pil.thumbnail(max_size)
+
     img_tk = ImageTk.PhotoImage(image=img_pil)
 
     if original:
