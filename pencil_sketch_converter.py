@@ -31,3 +31,17 @@ def convert_to_sketch(img):
 
 
 def display_image(img, original):
+    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) if original else img
+    img_pil = Image.fromarray(img_rgb)
+    img_tk = ImageTk.PhotoImage(image=img_pil)
+
+    if original:
+        images["original"] = img_pil
+    else:
+        images["sketch"] = img_pil
+
+    label = original_image_label if original else sketch_image_label
+    label.config(image=imb_tk)
+    label.image = img_tk
+
+
